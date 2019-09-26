@@ -2,4 +2,11 @@ services:
   - docker
 
 script:
-- docker build -t unitytest .
+  - docker build -t unitytest .
+  - docker tag unitytest unity:2019.1.0f2
+  - docker push unity:2019.1.0f2
+  - docker login --username stanov --password $DOCKER_HUB_PASSWORD
+
+cache:
+  directories:
+  - unitydownload
