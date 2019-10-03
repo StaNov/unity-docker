@@ -1,9 +1,13 @@
 services:
   - docker
 
+env:
+  - UNITY_VERSION=2019.1.0f2
+  - UNITY_HASH=292b93d75a2c
+
 script:
   - docker build -t unity .
-  - docker tag unity stanov/unity:2019.1.0f2
+  - docker tag unity stanov/unity:$UNITY_VERSION
   - docker login --username stanov --password $DOCKER_HUB_PASSWORD
-  - docker push stanov/unity:2019.1.0f2
+  - docker push stanov/unity:$UNITY_VERSION
 
