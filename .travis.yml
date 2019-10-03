@@ -5,7 +5,7 @@ env:
   - UNITY_VERSION=2019.2.7f2 UNITY_HASH=c96f78eb5904
 
 script:
-  - docker build -t unity .
+  - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
   - docker tag unity stanov/unity:$UNITY_VERSION
   - docker login --username stanov --password $DOCKER_HUB_PASSWORD
   - docker push stanov/unity:$UNITY_VERSION
