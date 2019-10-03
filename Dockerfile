@@ -1,4 +1,6 @@
 FROM ubuntu:latest
+ARG UNITY_VERSION
+ARG UNITY_HASH
 
 RUN apt update
 RUN apt install -y wget libgtk2.0-0 libsoup2.4-1 libarchive13 libglu1 libgtk-3-0 libnss3 libasound2 libgconf-2-4 libcap2
