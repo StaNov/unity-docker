@@ -12,4 +12,6 @@ RUN yes | ./UnitySetup -u -l Unity -d UnityDownload
 
 RUN rm -f && rm -rf UnitySetup UnityDownload
 
+COPY Unity_v2017.x.ulf /root/.local/share/unity3d/Unity/Unity_lic.ulf
+
 CMD cd Unity/Editor
