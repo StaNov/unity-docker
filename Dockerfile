@@ -15,3 +15,5 @@ RUN rm -f && rm -rf UnitySetup UnityDownload
 COPY unity_license.ulf /Unity
 
 RUN echo 'alias unity="/Unity/Editor/Unity -batchmode -nographics -manualLicenseFile /Unity/unity_license.ulf"' >> ~/.bashrc
+
+RUN echo -e '#!/bin/bash\n/Unity/Editor/Unity -batchmode -nographics -manualLicenseFile /Unity/unity_license.ulf "$@"' > /usr/bin/unity && chmod +x /usr/bin/unity
