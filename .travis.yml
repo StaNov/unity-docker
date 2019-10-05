@@ -5,7 +5,8 @@ env:
   - UNITY_VERSION=2019.2.7f2 UNITY_HASH=c96f78eb5904
 
 script:
-  - docker build -t stanov/unity:$UNITY_VERSION --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
+  - docker build -t stanov/unity:${UNITY_VERSION}-no-license --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
+  - echo "Use XML below as license request file here: https://license.unity3d.com/manual , then put the license file into stanov/unity-docker-with-license repo."
+  - docker run stanov/unity:${UNITY_VERSION}-no-license /Unity/Editor/Unity -batchmode -nographics --username "$UNITY_USERNAME" --password "$UNITY_PASSWORD"
   - echo $DOCKER_HUB_PASSWORD | docker login --username stanov --password-stdin
-  - docker push stanov/unity:$UNITY_VERSION
-
+  - docker push stanov/unity:${UNITY_VERSION}-no-license
