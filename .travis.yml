@@ -2,7 +2,7 @@ services:
   - docker
 
 env:
-  - UNITY_VERSION=2019.1.0f2 UNITY_HASH=292b93d75a2c
+  - UNITY_VERSION=2019.2.7f2 UNITY_HASH=c96f78eb5904
 
 script:
   - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
