@@ -9,8 +9,8 @@ script:
   - docker tag stanov/unity:bare unity
 # TODO then build from scratch  - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
   - echo 'Use XML below as license request file here: https://license.unity3d.com/manual , then put the license file into stanov/unity-docker-with-license repo.'
-# TODO  - docker run unity /Unity/Editor/Unity -batchmode -nographics -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD"
   - docker run unity /Unity/Editor/Unity -batchmode -nographics -createManualActivationFile
+  - cat Unity_v*
   - echo $DOCKER_HUB_PASSWORD | docker login --username stanov --password-stdin
   - docker tag unity stanov/unity:${UNITY_VERSION}-no-license
   - docker push stanov/unity:${UNITY_VERSION}-no-license
