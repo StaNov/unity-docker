@@ -11,7 +11,7 @@ before_script:
   
 script:
   - echo "Use XML below as license request file here https://license.unity3d.com/manual , then put the license file into stanov/unity-docker-with-license repo."
-  - docker run unity "/Unity/Editor/Unity -batchmode -nographics -createManualActivationFile -quit; cat Unity_v*"
+  - docker run unity bash -c "/Unity/Editor/Unity -quit -batchmode -nographics -logFile -createManualActivationFile; cat Unity_*"
   - echo $DOCKER_HUB_PASSWORD | docker login --username stanov --password-stdin
   - docker tag unity stanov/unity:${UNITY_VERSION}-no-license
   - docker push stanov/unity:${UNITY_VERSION}-no-license
