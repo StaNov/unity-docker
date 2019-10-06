@@ -5,6 +5,7 @@ env:
   - UNITY_VERSION=2019.2.7f2 UNITY_HASH=c96f78eb5904
 
 before_script:
+  - set -e
 # TODO then build from scratch  - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
   - docker pull stanov/unity:bare
   - docker tag stanov/unity:bare unity
