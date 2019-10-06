@@ -10,8 +10,8 @@ before_script:
   - docker tag stanov/unity:bare unity
   
 script:
-  - echo 'Use XML below as license request file here: https://license.unity3d.com/manual , then put the license file into stanov/unity-docker-with-license repo.'
-  - docker run unity "/Unity/Editor/Unity -batchmode -nographics -createManualActivationFile; cat /Unity_v*"
+  - echo "Use XML below as license request file here https://license.unity3d.com/manual , then put the license file into stanov/unity-docker-with-license repo."
+  - docker run unity "/Unity/Editor/Unity -batchmode -nographics -createManualActivationFile -quit; cat Unity_v*"
   - echo $DOCKER_HUB_PASSWORD | docker login --username stanov --password-stdin
   - docker tag unity stanov/unity:${UNITY_VERSION}-no-license
   - docker push stanov/unity:${UNITY_VERSION}-no-license
