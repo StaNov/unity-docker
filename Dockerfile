@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:18.04
 ARG UNITY_VERSION
 ARG UNITY_HASH
 
@@ -11,3 +11,7 @@ RUN chmod +x UnitySetup
 RUN yes | ./UnitySetup -u -l Unity -d UnityDownload
 
 RUN rm -rf UnitySetup UnityDownload
+
+RUN echo '#!/bin/bash' > /usr/bin/unity && \
+    echo '/Unity/Editor/Unity -batchmode -nographics -quit "$@"' >> /usr/bin/unity && \
+    chmod +x /usr/bin/unity

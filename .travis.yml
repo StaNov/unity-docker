@@ -9,8 +9,9 @@ before_script:
   - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
   
 script:
-  - echo "Use XML below as license request file here https://license.unity3d.com/manual , then put the license file into stanov/unity-docker-with-license repo."
-  - docker run unity bash -c "cd /; /Unity/Editor/Unity -quit -batchmode -nographics -createManualActivationFile; cat /Unity_v${UNITY_VERSION}.alf"
-  - echo $DOCKER_HUB_PASSWORD | docker login --username stanov --password-stdin
+  - docker run unity bash -c "cd /; /Unity/Editor/Unity -quit -batchmode -nographics -createManualActivationFile > /dev/null; cat Unity_v*.alf" > UnityLicenseRequest.alf
+  - echo $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin
   - docker tag unity stanov/unity:${UNITY_VERSION}-no-license
   - docker push stanov/unity:${UNITY_VERSION}-no-license
+  - echo "Use XML below as license request file here https://license.unity3d.com/manual , then put the license file into stanov/unity-docker-with-license repo."
+  - cat UnityLicenseRequest.alf
