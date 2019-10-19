@@ -6,6 +6,7 @@ env:
 
 before_script:
   - set -e
+  - apt install libxml2-utils -y
   - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
   
 script:
