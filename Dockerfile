@@ -13,5 +13,5 @@ RUN yes | ./UnitySetup -u -l Unity -d UnityDownload
 RUN rm -rf UnitySetup UnityDownload
 
 RUN echo '#!/bin/bash' > /usr/bin/unity && \
-    echo '/Unity/Editor/Unity -batchmode -nographics -quit "$@"' >> /usr/bin/unity && \
+    echo '/Unity/Editor/Unity -batchmode -nographics "$@"' >> /usr/bin/unity && \
     chmod +x /usr/bin/unity
