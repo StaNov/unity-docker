@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:18.04 AS builder
 ARG UNITY_VERSION
 ARG UNITY_HASH
 
@@ -10,4 +10,8 @@ RUN chmod +x UnitySetup
 
 RUN yes | ./UnitySetup -u -l Unity -d UnityDownload
 
-RUN rm -rf UnitySetup UnityDownload
+
+FROM ubuntu:18.04
+RUN apt update
+RUN apt install -y libgtk2.0-0 libsoup2.4-1 libarchive13 libglu1 libgtk-3-0 libnss3 libasound2 libgconf-2-4 libcap2
+COPY --from=builder /Unity /Unity
