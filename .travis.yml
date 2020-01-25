@@ -7,12 +7,13 @@ env:
 before_script:
   - set -e
   - sudo apt install libxml2-utils -y
-  - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
   
 script:
-  - docker run unity bash -c "cd /; unity -createManualActivationFile > /dev/null; cat Unity_v${UNITY_VERSION}.alf" | xmllint --format --output UnityLicenseRequest.alf -
-  - echo $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin
-  - docker tag unity ${DOCKER_HUB_USERNAME}/unity:${UNITY_VERSION}-no-license
-  - docker push ${DOCKER_HUB_USERNAME}/unity:${UNITY_VERSION}-no-license
-  - echo "Use the XML below as a license request file here https://license.unity3d.com/manual , then put the license file into stanov/unity-docker-with-license repo."
-  - cat UnityLicenseRequest.alf
+  - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
+  - docker run -v $(pwd)/licenseFile:/licenseFile -w /licenseFile unity unity -createManualActivationFile || echo "Unity returns code 1 even if it succeeds"
+  - xmllint --format --output UnityRequestFile.alf licenseFile/Unity_v${UNITY_VERSION}.alf
+  - echo $DOCKER_HUB_PASSWORD | docker login --username stanov --password-stdin
+  - docker tag unity stanov/unity:${UNITY_VERSION}-no-license
+  - docker push stanov/unity:${UNITY_VERSION}-no-license
+  - echo "Use XML below as license request file here https://license.unity3d.com/manual , then put the license file into stanov/unity-docker-with-license repo."
+  - echo -e "\n\n\n" && cat UnityRequestFile.alf
