@@ -7,25 +7,6 @@ services:
 
 env:
   - UNITY_VERSION=2020.1.10f1 UNITY_HASH=974a9d56f159
-
-before_script:
-  - set -e
-  - sudo apt install libxml2-utils -y
   
 script:
-#  - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
-  - docker pull stanov/unity:${UNITY_VERSION}-no-license  # TODO remove
-  - docker tag stanov/unity:${UNITY_VERSION}-no-license unity  # TODO remove
-  - docker run -v $(pwd)/licenseFile:/licenseFile -w /licenseFile unity unity -createManualActivationFile || echo "Unity returns code 1 even if it succeeds"
-  - xmllint --format --output UnityRequestFile.alf licenseFile/Unity_v${UNITY_VERSION}.alf
-  - echo $DOCKER_HUB_PASSWORD | docker login --username stanov --password-stdin
-  - docker tag unity stanov/unity:${UNITY_VERSION}-no-license
-  - docker push stanov/unity:${UNITY_VERSION}-no-license
-  - echo "You can use the XML below to activate Unity with your license at https://license.unity3d.com/manual."
-  - echo -e "\n\n\n" && cat UnityRequestFile.alf
-  - cp licenseFile/UnityRequestFile.alf activation
-  - docker run -d --name remoteSelenium -p 4444:4444 -v /dev/shm:/dev/shm -v $(pwd)/licenseFile:/licenseFile selenium/standalone-chrome
-  - python3 activation/activate.py
-  - docker exec remoteSelenium bash -c 'sudo cp /home/seluser/Downloads/* /licenseFile'
-  - ls /licenseFile
-  - cat /licenseFile/*.ulf
+  - ./script.sh
