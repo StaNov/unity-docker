@@ -3,6 +3,7 @@ import sys
 from time import sleep
 
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -36,7 +37,15 @@ with _create_web_driver() as ff:
     WebDriverWait(ff, 20).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, "input[type=submit]"))).click()
     print("Submit clicked")
 
-    WebDriverWait(ff, 60).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
+    try:
+        WebDriverWait(ff, 60).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
+    except TimeoutException as e:
+        errors = ff.find_elements_by_class_name("error-msg")
+        if errors:
+            print(errors[0].get_attribute('innerHTML'))
+        else:
+            print("Errors block not found")
+        raise e
 
     ff.get("https://license.unity3d.com/manual")
     sleep(20)  # reload the manual page after credentials check, chrome doesn't allow to check the URL
