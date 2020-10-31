@@ -1,8 +1,10 @@
 # Unity in Docker
 
+[![Build Status](https://travis-ci.org/StaNov/unity-docker.svg?branch=master)](https://travis-ci.org/StaNov/unity-docker)
+
 ## What it does
 
-Provides Unity in Docker image
+Provides Unity in Docker image.
 
 Useful for continuous integration jobs.
 
@@ -11,6 +13,8 @@ Useful for continuous integration jobs.
     
     docker run unityImage unity -runTests -testPlatform editmode
     docker run unityImage unity -runTests -testPlatform playmode
+    
+_Note: The activation script assumes that you don't use Unity for commercial purposes. If it is not true, don't use this image._
 
 ## What it does in more detail
 
