@@ -40,6 +40,7 @@ with _create_web_driver() as ff:
     try:
         WebDriverWait(ff, 60).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
     except TimeoutException as e:
+        print("Current URL: " + ff.current_url)
         errors = ff.find_elements_by_class_name("error-msg")
         if errors:
             print(errors[0].get_attribute('innerHTML'))
