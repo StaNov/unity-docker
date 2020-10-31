@@ -26,12 +26,12 @@ def _create_web_driver():
 with _create_web_driver() as ff:
     ff.get("https://id.unity.com")
     print("Page opened")
-    emailField = WebDriverWait(ff, 10).until(presence_of_element_located((By.ID, "conversations_create_session_form_email")))
+    emailField = WebDriverWait(ff, 10).until(expected_conditions.element_to_be_clickable((By.ID, "conversations_create_session_form_email")))
     emailField.send_keys(email)
-    print("Email filled " + email[-2:])
-    passwordField = WebDriverWait(ff, 10).until(presence_of_element_located((By.ID, "conversations_create_session_form_password")))
+    print("Email filled")
+    passwordField = WebDriverWait(ff, 10).until(expected_conditions.element_to_be_clickable((By.ID, "conversations_create_session_form_password")))
     passwordField.send_keys(password)
-    print("Password filled " + password[-2:])
+    print("Password filled")
     WebDriverWait(ff, 10).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, "input[type=submit]"))).click()
     print("Submit clicked")
 
