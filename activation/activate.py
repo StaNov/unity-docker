@@ -1,4 +1,5 @@
 import os
+import sys
 from time import sleep
 
 from selenium import webdriver
@@ -14,14 +15,23 @@ password = os.environ['UNITY_PASSWORD']
 
 options = ChromeOptions()
 
-# with WebDriver(options=options) as ff:
-with webdriver.Remote(command_executor="http://localhost:4444/wd/hub", options=options) as ff:
+
+def _create_web_driver():
+    if "selenium" in sys.argv:
+        return webdriver.Remote(command_executor="http://localhost:4444/wd/hub", options=options)
+    else:
+        return WebDriver(options=options)
+
+
+with _create_web_driver() as ff:
     ff.get("https://id.unity.com")
     emailField = ff.find_element_by_id("conversations_create_session_form_email")
     emailField.send_keys(email)
     passwordField = ff.find_element_by_id("conversations_create_session_form_password")
     passwordField.send_keys(password)
     ff.find_element_by_css_selector("input[type=submit]").click()
+
+    WebDriverWait(ff, 10).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
 
     ff.get("https://license.unity3d.com/manual")
     sleep(10)  # reload the manual page after credentials check, chrome doesn't allow to check the URL
