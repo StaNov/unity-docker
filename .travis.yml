@@ -17,3 +17,5 @@ script:
   - docker push stanov/unity:${UNITY_VERSION}-no-license
   - echo "You can use the XML below to activate Unity with your license at https://license.unity3d.com/manual."
   - echo -e "\n\n\n" && cat UnityRequestFile.alf
+  - cp licenseFile/UnityRequestFile.alf activation
+  - python activation/activate.py
