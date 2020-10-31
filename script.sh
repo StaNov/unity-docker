@@ -22,7 +22,9 @@ cp licenseFile/UnityRequestFile.alf activation
 docker run -d --rm --name remoteSelenium -p 4444:4444 -v /dev/shm:/dev/shm -v $(pwd)/licenseFile:/licenseFile selenium/standalone-chrome
 pip3 install -r activation/requirements.txt
 while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:4444)" != "200" ]]; do sleep 1; done
+echo "Running activation. Logs will appear when done."
 python3 activation/activate.py selenium
+echo "Activation done, license file downloaded."
 docker exec remoteSelenium bash -c 'sudo cp /home/seluser/Downloads/* /licenseFile'
 docker kill remoteSelenium
 sudo mv licenseFile/*.ulf licenseFile/UnityLicense.ulf
