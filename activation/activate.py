@@ -13,6 +13,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 email = os.environ['UNITY_EMAIL']
 password = os.environ['UNITY_PASSWORD']
+recoveryCode = os.environ['UNITY_RECOVERY_CODE']
 
 options = ChromeOptions()
 
@@ -40,15 +41,21 @@ with _create_web_driver() as ff:
     print("Submit clicked")
 
     try:
-        WebDriverWait(ff, 60).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
+        WebDriverWait(ff, 20).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
     except TimeoutException as e:
-        print("Current URL: " + ff.current_url)
+        print("Login not successful, looking to TFA elements")
         errors = ff.find_elements_by_class_name("error-msg")
         if errors:
             print(errors[0].get_attribute('innerHTML'))
         else:
             print("Errors block not found")
-        raise e
+
+        ff.find_element_by_css_selector("button[value=backup_code]").click()
+        verificationCodeField = WebDriverWait(ff, 30).until(presence_of_element_located((By.ID, "conversations_tfa_required_form_verify_code")))
+        verificationCodeField.send_keys(recoveryCode)
+
+        WebDriverWait(ff, 20).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, "input[type=submit]"))).click()
+        WebDriverWait(ff, 20).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
 
     ff.get("https://license.unity3d.com/manual")
     sleep(20)  # reload the manual page after credentials check, chrome doesn't allow to check the URL
