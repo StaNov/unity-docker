@@ -36,7 +36,7 @@ with _create_web_driver() as ff:
     WebDriverWait(ff, 10).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, "input[type=submit]"))).click()
     print("Submit clicked")
 
-    WebDriverWait(ff, 10).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
+    WebDriverWait(ff, 30).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
 
     ff.get("https://license.unity3d.com/manual")
     sleep(10)  # reload the manual page after credentials check, chrome doesn't allow to check the URL
