@@ -25,16 +25,21 @@ def _create_web_driver():
 
 with _create_web_driver() as ff:
     ff.get("https://id.unity.com")
-    emailField = ff.find_element_by_id("conversations_create_session_form_email")
+    print("Page opened")
+    emailField = WebDriverWait(ff, 10).until(presence_of_element_located((By.ID, "conversations_create_session_form_email")))
     emailField.send_keys(email)
-    passwordField = ff.find_element_by_id("conversations_create_session_form_password")
+    print("Email filled " + email[-2:])
+    passwordField = WebDriverWait(ff, 10).until(presence_of_element_located((By.ID, "conversations_create_session_form_password")))
     passwordField.send_keys(password)
-    ff.find_element_by_css_selector("input[type=submit]").click()
+    print("Password filled " + password[-2:])
+    WebDriverWait(ff, 10).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, "input[type=submit]"))).click()
+    print("Submit clicked")
 
     WebDriverWait(ff, 10).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
 
     ff.get("https://license.unity3d.com/manual")
     sleep(10)  # reload the manual page after credentials check, chrome doesn't allow to check the URL
+    print("Activation page reloaded")
 
     licenseFilePath = os.path.abspath("UnityRequestFile.alf")
     print("License file path: " + licenseFilePath)
