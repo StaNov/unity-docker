@@ -14,6 +14,9 @@ RUN yes | ./UnitySetup -u -l Unity -d UnityDownload
 FROM ubuntu:18.04
 RUN apt update
 RUN apt install -y libgtk2.0-0 libsoup2.4-1 libarchive13 libglu1 libgtk-3-0 libnss3 libasound2 libgconf-2-4 libcap2
+RUN apt clean
+RUN rm -rf /var/cache/apt/*.bin \
+    /var/lib/apt/lists/*
 COPY --from=builder /Unity /Unity
 
 RUN echo '#!/bin/bash' > /usr/bin/unity && \
