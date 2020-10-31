@@ -3,9 +3,12 @@ set -e
 UNITY_VERSION=$1
 
 sudo apt-get install libxml2-utils -y
-# docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
-docker pull stanov/unity:${UNITY_VERSION}-no-license  # TODO remove
-docker tag stanov/unity:${UNITY_VERSION}-no-license unity  # TODO remove
+
+docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
+# for debugging purposes to speed up the build, use those lines instead of the above one:
+# docker pull stanov/unity:${UNITY_VERSION}-no-license
+# docker tag stanov/unity:${UNITY_VERSION}-no-license unity
+
 docker run --rm -v $(pwd)/licenseFile:/licenseFile -w /licenseFile unity unity -createManualActivationFile || echo "Unity returns code 1 even if it succeeds"
 sudo xmllint --format --output licenseFile/UnityRequestFile.alf licenseFile/Unity_v${UNITY_VERSION}.alf
 if [ -n "$DOCKER_HUB_PASSWORD" ]; then
@@ -28,4 +31,3 @@ docker build --build-arg UNITY_VERSION=$UNITY_VERSION -t stanov/unity:$UNITY_VER
 if [ -n "$DOCKER_HUB_PASSWORD" ]; then
   docker push stanov/unity:$UNITY_VERSION
 fi
-

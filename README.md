@@ -24,5 +24,9 @@ Useful for continuous integration jobs.
 * Fork the repo.
 * Modify your Docker Hub credentials.
 * Modify the version variable.
+* Configure Travis CI
+  * Add your Unity credentials to Travis CI variables (`UNITY_EMAIL` and `UNITY_PASSWORD`)
+    * Separate Unity account is preferred.
+  * Enable Unity TFA and add recovery code to the `UNITY_RECOVERY_CODE` Travis variable.
 * Run in Travis CI.
 * Pull image from your Docker Hub repo.
