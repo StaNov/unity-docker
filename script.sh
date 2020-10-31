@@ -23,5 +23,9 @@ python3 activation/activate.py
 docker exec remoteSelenium bash -c 'sudo cp /home/seluser/Downloads/* /licenseFile'
 docker kill remoteSelenium
 sudo mv licenseFile/*.ulf licenseFile/UnityLicense.ulf
-ls licenseFile
-cat licenseFile/*.ulf
+
+docker build --build-arg UNITY_VERSION=$UNITY_VERSION -t stanov/unity:$UNITY_VERSION -f Dockerfile.license-add .
+if [ -n "$DOCKER_HUB_PASSWORD" ]; then
+  docker push stanov/unity:$UNITY_VERSION
+fi
+

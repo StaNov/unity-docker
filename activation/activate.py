@@ -24,19 +24,19 @@ with webdriver.Remote(command_executor="http://localhost:4444/wd/hub", options=o
     ff.find_element_by_css_selector("input[type=submit]").click()
 
     ff.get("https://license.unity3d.com/manual")
-    sleep(5)  # reload the manual page after credentials check, chrome doesn't allow to check the URL
+    sleep(10)  # reload the manual page after credentials check, chrome doesn't allow to check the URL
 
     licenseFilePath = os.path.abspath("UnityRequestFile.alf")
     print("License file path: " + licenseFilePath)
 
-    licenseFileField = WebDriverWait(ff, 5).until(presence_of_element_located((By.ID, "licenseFile")))
+    licenseFileField = WebDriverWait(ff, 10).until(presence_of_element_located((By.ID, "licenseFile")))
     licenseFileField.send_keys(licenseFilePath)
     ff.find_element_by_css_selector("input[type=submit]").click()
 
-    WebDriverWait(ff, 5).until(presence_of_element_located((By.CSS_SELECTOR, "label[for=type_personal]"))).click()
+    WebDriverWait(ff, 10).until(presence_of_element_located((By.CSS_SELECTOR, "label[for=type_personal]"))).click()
     ff.find_element_by_css_selector("label[for=option3]").click()
-    WebDriverWait(ff, 5).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, ".option-personal input[type=submit]"))).click()
+    WebDriverWait(ff, 10).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, ".option-personal input[type=submit]"))).click()
 
-    WebDriverWait(ff, 5).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, "input[type=submit]"))).click()
+    WebDriverWait(ff, 10).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, "input[type=submit]"))).click()
 
-    sleep(5)  # let the download finish
+    sleep(10)  # let the download finish
