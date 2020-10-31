@@ -14,7 +14,8 @@ before_script:
   
 script:
 #  - docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
-  - docker pull -t unity stanov/unity:${UNITY_VERSION}-no-license
+  - docker pull stanov/unity:${UNITY_VERSION}-no-license  # TODO remove
+  - docker tag stanov/unity:${UNITY_VERSION}-no-license unity  # TODO remove
   - docker run -v $(pwd)/licenseFile:/licenseFile -w /licenseFile unity unity -createManualActivationFile || echo "Unity returns code 1 even if it succeeds"
   - xmllint --format --output UnityRequestFile.alf licenseFile/Unity_v${UNITY_VERSION}.alf
   - echo $DOCKER_HUB_PASSWORD | docker login --username stanov --password-stdin
