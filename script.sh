@@ -1,5 +1,30 @@
 set -e
 
+if [ -z "$1" ]; then
+  echo "ERROR: Script must be run with unity version as argument."
+  exit 1
+fi
+
+if [ -z "$UNITY_HASH" ]; then
+  echo "ERROR: UNITY_HASH variable is not set."
+  exit 1
+fi
+
+if [ -z "$UNITY_EMAIL" ]; then
+  echo "ERROR: UNITY_EMAIL variable is not set."
+  exit 1
+fi
+
+if [ -z "$UNITY_PASSWORD" ]; then
+  echo "ERROR: UNITY_PASSWORD variable is not set."
+  exit 1
+fi
+
+if [ -z "$UNITY_RECOVERY_CODE" ]; then
+  echo "ERROR: UNITY_RECOVERY_CODE variable is not set."
+  exit 1
+fi
+
 UNITY_VERSION=$1
 
 sudo apt-get install libxml2-utils -y -q
