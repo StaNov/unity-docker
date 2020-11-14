@@ -25,6 +25,14 @@ def _create_web_driver():
         return WebDriver(options=options)
 
 
+def _print_errors():
+    errors = ff.find_elements_by_class_name("error-msg")
+    if errors:
+        print(errors[0].get_attribute('innerHTML'))
+    else:
+        print("Errors block not found")
+
+
 with _create_web_driver() as ff:
     ff.get("https://id.unity.com")
     print("Page opened")
@@ -38,21 +46,24 @@ with _create_web_driver() as ff:
     print("Submit clicked")
 
     try:
-        WebDriverWait(ff, 20).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
+        WebDriverWait(ff, 10).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
     except TimeoutException as e:
-        print("Login not successful, looking to TFA elements")
-        errors = ff.find_elements_by_class_name("error-msg")
-        if errors:
-            print(errors[0].get_attribute('innerHTML'))
-        else:
-            print("Errors block not found")
+        print("Login not successful, looking to backup code elements")
+        _print_errors()
 
         ff.find_element_by_css_selector("button[value=backup_code]").click()
+        print("Found backup code input")
         verificationCodeField = WebDriverWait(ff, 30).until(presence_of_element_located((By.ID, "conversations_tfa_required_form_verify_code")))
         verificationCodeField.send_keys(recoveryCode)
 
         WebDriverWait(ff, 20).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR, "input[type=submit]"))).click()
-        WebDriverWait(ff, 20).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
+        print("Submitted backup code")
+        try:
+            WebDriverWait(ff, 20).until(expected_conditions.url_to_be("https://id.unity.com/en/account/edit"))
+        except TimeoutException as e:
+            print("Login not successful")
+            _print_errors()
+            exit(1)
 
     ff.get("https://license.unity3d.com/manual")
     sleep(10)  # reload the manual page after credentials check, chrome doesn't allow to check the URL
