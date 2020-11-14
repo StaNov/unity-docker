@@ -2,7 +2,7 @@ set -e
 
 UNITY_VERSION=$1
 
-sudo apt-get install libxml2-utils -y
+sudo apt-get install libxml2-utils -y -q
 
 docker build -t unity --build-arg UNITY_VERSION=$UNITY_VERSION --build-arg UNITY_HASH=$UNITY_HASH .
 # for debugging purposes to speed up the build, use those lines instead of the above one:
@@ -20,7 +20,7 @@ echo "You can use the XML below to activate Unity with your license at https://l
 echo -e "\n\n\n" && cat licenseFile/UnityRequestFile.alf
 cp licenseFile/UnityRequestFile.alf activation
 docker run -d --rm --name remoteSelenium -p 4444:4444 -v /dev/shm:/dev/shm -v $(pwd)/licenseFile:/licenseFile selenium/standalone-chrome
-pip3 install -r activation/requirements.txt
+pip3 install -q -r activation/requirements.txt
 while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:4444)" != "200" ]]; do sleep 1; done
 echo "Running activation. Logs will appear when done."
 python3 activation/activate.py selenium
