@@ -1,7 +1,7 @@
 set -e
 
-if [ -z "$1" ]; then
-  echo "ERROR: Script must be run with unity version as argument."
+if [ -z "$UNITY_VERSION" ]; then
+  echo "ERROR: UNITY_VERSION variable is not set."
   exit 1
 fi
 
@@ -24,8 +24,6 @@ if [ -z "$UNITY_RECOVERY_CODE" ]; then
   echo "ERROR: UNITY_RECOVERY_CODE variable is not set."
   exit 1
 fi
-
-UNITY_VERSION=$1
 
 sudo apt-get install libxml2-utils -y -q
 

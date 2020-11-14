@@ -9,4 +9,4 @@ env:
   - UNITY_VERSION=2020.1.13f1 UNITY_HASH=5e24f28bfbc0
 
 script:
-  - ./script.sh $UNITY_VERSION
+  - ./script.sh
